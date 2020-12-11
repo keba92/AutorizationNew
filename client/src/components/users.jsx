@@ -14,7 +14,7 @@ function Users() {
     const idUsers = []
 
     useEffect(() =>{
-        Axios.get('/showUsers').then((response) => {
+        Axios.post('/showUsers', { user: 'Users' }).then((response) => {
             setData(response.data);
         });   
     },[])

@@ -145,7 +145,7 @@ app.post('/haveUser', (req, res) => {
 });
 
 
-app.get('/showUsers', (req, res) => {
+app.post('/showUsers', (req, res) => {
   db.query('SELECT * FROM Users;', (err, result) => {
     if (err) {
       console.log(err);
