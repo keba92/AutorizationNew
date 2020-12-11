@@ -33,7 +33,6 @@ function Users() {
                     if (res.data === 'reload'){
                         window.location.assign('/');
                     } else {
-                        console.log(res.data);
                         window.location.assign('/users');
                     }
                 })
