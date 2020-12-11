@@ -30,11 +30,7 @@ function Users() {
                     del:  key
                 })
                 .then((res)=>{
-                    if (res.data === 'reload'){
-                        window.location.assign('/');
-                    } else {
-                        window.location.assign('/users');
-                    }
+                    (res.data === 'reload') ? window.location.assign('/') : window.location.assign('/users');
                 })
             }
         }
@@ -64,11 +60,7 @@ function Users() {
                     block:  key
                 })
                 .then((res)=>{
-                    if (res.data === 'reload'){
-                        window.location.assign('/');
-                    } else {
-                        window.location.assign('/users');
-                    }
+                    (res.data === 'reload') ? window.location.assign('/') : window.location.assign('/users');
                 })
             }
         }
@@ -83,7 +75,8 @@ function Users() {
             if(checkedItems[key]){
                 Axios.post('/unBlockUser',{
                     unblock:  key
-                }).then(() =>{setData([])})
+                })
+                .then(() =>{setData([])})
                 .then(_refreshPage())
             }
         }

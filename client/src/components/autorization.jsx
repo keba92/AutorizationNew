@@ -10,11 +10,7 @@ function Autorization() {
             login:  login,
             password: password
         }).then((response) => {
-          if(response.data){
-            window.location.assign('/users');
-          } else {
-            alert('Not found or User is Block');
-          }
+          (response.data)? window.location.assign('/users') : alert('Not found or User is Block');
         })
       };
 

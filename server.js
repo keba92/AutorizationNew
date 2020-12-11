@@ -63,11 +63,7 @@ app.post('/addUser', (req, res) => {
             'INSERT INTO Users (Id, Name, Email, Password, Date_Regist, Status_user) VALUES (?,?,?,?,?,?)',
             [id, login, email, password, dateRegist, status],
             (err, result) => {
-              if (err) {
-                console.log(err);
-              } else {
-                res.send('User registered successfully, you can login');
-              }
+              (err) ? console.log(err) : res.send('User registered successfully, you can login');
             }
           );
         }
@@ -80,15 +76,7 @@ app.post('/deleteUser', (req, res) => {
   const sql = 'DELETE FROM Users WHERE Id =?';
   db.query(sql, [del],
     (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        if (userIn == del){
-          res.send('reload');
-        } else {
-          res.send('no');
-        }
-      }
+      (err) ? console.log(err) : (userIn == del) ? res.send('reload') : res.send('no');
     })
 })
 
@@ -98,15 +86,7 @@ app.post('/blockUser', (req, res) => {
   const sql = `UPDATE Users SET Status_user=? WHERE Id =?`;
   db.query(sql, [status, block],
     (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        if (userIn == block){
-          res.send('reload');
-        } else {
-          res.send('no');
-        }
-      }
+      (err) ? console.log(err) : (userIn == block) ? res.send('reload') : res.send('no');
     })
 })
 
@@ -116,9 +96,7 @@ app.post('/unBlockUser', (req, res) => {
   const sql = `UPDATE Users SET Status_user=? WHERE Id =?`;
   db.query(sql, [status, unblock],
     (err, result) => {
-      if (err) {
-        console.log(err);
-      }
+      if (err) console.log(err);
     })
 })
 
@@ -147,11 +125,7 @@ app.post('/haveUser', (req, res) => {
 
 app.post('/showUsers', (req, res) => {
   db.query('SELECT * FROM Users;', (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-    }
+    (err) ? console.log(err) : res.send(result);
   });
 });
 
