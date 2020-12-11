@@ -81,7 +81,6 @@ function Users() {
 
     const unBlockUser = () =>{
         for(const key in checkedItems){
-            console.log(key)
             if(checkedItems[key]){
                 Axios.post('/unBlockUser',{
                     unblock:  key
@@ -107,7 +106,6 @@ function Users() {
     
     return(
         <div className = 'users'>
-            {console.log(data)}
             <h1>Users</h1>
             <a href="/">LogOut</a>
             <span className = 'toolBar'>
