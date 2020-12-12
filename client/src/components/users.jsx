@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from "react";
-import Axios from 'axios'
+import Axios from 'axios';
 
 const Checkbox = ({ type = "checkbox", checked = false, onChange, value }) => {
     return (
@@ -11,7 +11,6 @@ function Users() {
     const [data, setData] = useState([]);
     const [checkedItems, setCheckedItems] = useState({});
     const [checkedAll, setCheckedAll] = useState(false);
-    const idUsers = []
 
     useEffect(() =>{
         Axios.post('/showUsers', { user: 'Users' }).then((response) => {
@@ -20,31 +19,42 @@ function Users() {
     },[])
 
     const handleChange = (event) => {
+        const checkbox = document.querySelectorAll('.form-check-input');
+        checkbox.forEach((el) => {
+            if ( el.value!=='all' )
+            checkedItems[el.value] = el.checked;
+        })
         setCheckedItems({...checkedItems, [event.target.value] : event.target.checked });
     }
 
-    const deleteUsers = () => {
+    const deleteUsers = (e) => {
+        e.preventDefault();
 		for(const key in checkedItems){
             if (Object.values(checkedItems).every((el) => el === true)) {
                 Axios.post('/deleteUser',{
                     del:  'all'
                 })
                 .then((res)=>{
-                    (res.data === 'reload') ? window.location.assign('/') : window.location.assign('/users');
+                    if (res.data === 'reload') {
+                        localStorage.setItem('entries', JSON.stringify(false));
+                    };
+                    window.location.assign('/users')
                 })
             } else if(checkedItems[key]){
                 Axios.post('/deleteUser',{
                     del:  key
                 })
                 .then((res)=>{
-                    (res.data === 'reload') ? window.location.assign('/') : window.location.assign('/users');
+                    if (res.data === 'reload') {
+                        localStorage.setItem('entries', JSON.stringify(false));
+                    };
+                    window.location.assign('/users');
                 })
             }
         }
 	}
 
     const tableTemplate = data.map((row) => {
-        idUsers.push(row.Id);
          return(
             <tr key={row.Id}>
                 <td><Checkbox checked={checkedItems[row.Id]}
@@ -60,46 +70,47 @@ function Users() {
          );
     });
 
-    const blockUser = () =>{
+    const blockUser = (e) =>{
+        e.preventDefault();
         for(const key in checkedItems){
             if (Object.values(checkedItems).every((el) => el === true)) {
                 Axios.post('/blockUser',{
                     block:  'all'
                 })
                 .then((res)=>{
-                    (res.data === 'reload') ? window.location.assign('/') : window.location.assign('/users');
+                    if (res.data === 'reload') {
+                        localStorage.setItem('entries', JSON.stringify(false));
+                    };
+                    window.location.assign('/users');
                 })
             } else if(checkedItems[key]){
                 Axios.post('/blockUser',{
                     block:  key
                 })
                 .then((res)=>{
-                    (res.data === 'reload') ? window.location.assign('/') : window.location.assign('/users');
+                    if (res.data === 'reload') {
+                        localStorage.setItem('entries', JSON.stringify(false));
+                    };
+                    window.location.assign('/users');
                 })
             }
         }
     }
 
-   const _refreshPage = () => {
-        window.location.reload();
-    }
-
-    const unBlockUser = () =>{
+    const unBlockUser = (e) =>{
+        e.preventDefault();
         for(const key in checkedItems){
             if(checkedItems[key]){
                 Axios.post('/unBlockUser',{
                     unblock:  key
                 })
                 .then(() =>{setData([])})
-                .then(_refreshPage())
             }
+            window.location.assign('/users')
         }
     }
 
     const selectAll = (value) => {
-        idUsers.forEach((el) => {
-            checkedItems[el] = false;
-        })
         setCheckedAll(value);
         setCheckedItems((prevState) => {
           const newState = { ...prevState };
@@ -109,11 +120,16 @@ function Users() {
           return newState;
         });
       };
+
+      const logOut = () => {
+        localStorage.setItem('entries', JSON.stringify(false));
+        window.location.assign('/users');
+      }
     
     return(
         <div className = 'users'>
             <h1>Users</h1>
-            <a href="/">LogOut</a>
+            <button className ='btn btn-outline-primary' onClick ={logOut}>LogOut</button>
             <span className = 'toolBar'>
                 <button className = 'btn' onClick ={blockUser}><i className='fa fa-close'></i> Block User</button>
                 <button className = 'btn' onClick ={deleteUsers}><i className='fa fa-trash'></i> Delete User</button>
@@ -122,7 +138,7 @@ function Users() {
             <table className ='table-light'>
                 <tr>
                     <th>Check All<br/>
-                        <input type='checkbox' className ='form-check-input' onChange={(event) => selectAll(event.target.checked)} checked={checkedAll}/>
+                        <input type='checkbox' className ='form-check-input' value ='all' onChange={(event) => selectAll(event.target.checked)} checked={checkedAll}/>
                     </th>
                     <th>ID</th>
                     <th>Name(Login)</th>

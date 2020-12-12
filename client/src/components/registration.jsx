@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Axios from 'axios';
+import { Link } from 'react-router-dom';
 function Registration() {
 
     const [login, setLogin] = useState('');
@@ -30,7 +31,7 @@ function Registration() {
             Login(name) :<input type='text' className ='login' onChange = {(e)=>{setLogin(e.target.value)}}></input>
             Email :<input type='email' className ='email' onChange = {(e)=>{setEmail(e.target.value)}}></input>
             Password: <input type="password" className ='password' onChange = {(e)=>{setPassword(e.target.value)}}></input>
-            <a href='/'>LogIn</a>
+            <Link to="/">Already have an account?</Link>
             <button className ='btn btn-outline-primary'onClick ={addUser}> Registration </button>
         </div>
     );
