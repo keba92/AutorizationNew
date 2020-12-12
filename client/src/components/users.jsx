@@ -11,6 +11,7 @@ function Users() {
     const [data, setData] = useState([]);
     const [checkedItems, setCheckedItems] = useState({});
     const [checkedAll, setCheckedAll] = useState(false);
+    const idUsers = [];
 
     useEffect(() =>{
         Axios.post('/showUsers', { user: 'Users' }).then((response) => {
@@ -112,6 +113,9 @@ function Users() {
     }
 
     const selectAll = (value) => {
+        idUsers.forEach((el) => {
+            checkedItems[el] = false;
+        })
         setCheckedAll(value);
         setCheckedItems((prevState) => {
           const newState = { ...prevState };
