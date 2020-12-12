@@ -113,8 +113,11 @@ function Users() {
     }
 
     const selectAll = (value) => {
-        idUsers.forEach((el) => {
-            checkedItems[el] = false;
+        const checkbox = document.querySelectorAll('.form-check-input');
+        checkbox.forEach((el) => {
+            if ( el.value!=='all' )
+            checkedItems[el.value] = el.checked;
+            
         })
         setCheckedAll(value);
         setCheckedItems((prevState) => {
