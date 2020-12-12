@@ -1,15 +1,13 @@
 import React from 'react';
 import { useState } from "react";
 import Axios from 'axios';
-
-function Authenticate(value) {
-  const [isisAuthenticated, setAuthenticated] = useState(false);
-  setAuthenticated(value);
-  return isisAuthenticated;
-}
+import { BrowserRouter } from 'react-router-dom';
+import Users from 'users';
+import Registration from './registration';
 function Autorization() {
     const [login, setLogIn] = useState('');
     const [password, setPassword] = useState('');
+    const [isisAuthenticated, setAuthenticated] = useState(false);
 
     const logIn = () => {
         Axios.post('/haveUser',{
@@ -17,7 +15,7 @@ function Autorization() {
             password: password
         }).then((response) => {
           if (response.data){
-            Authenticate(true);
+            setAuthenticated(true);
             window.location.assign('/users')
           } else {
             alert('Not found or User is Block');
@@ -32,8 +30,9 @@ function Autorization() {
             Password: <input type="password" className ='password' onChange ={(e) => {setPassword(e.target.value)}}></input>
             <a href='/registration'> Registration </a>
             <button className ='btn btn-outline-primary' onClick ={logIn}> LogIn </button>
+            <BrowserRouter>{isisAuthenticated ? <Users /> : <Registration/> }</BrowserRouter>
         </div>
     );
 }
 
-export default {Autorization, Authenticate};
+export default Autorization;
