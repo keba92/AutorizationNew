@@ -63,7 +63,7 @@ function Users() {
     const blockUser = () =>{
         for(const key in checkedItems){
             if (Object.values(checkedItems).every((el) => el === true)) {
-                Axios.post('/blockUse',{
+                Axios.post('/blockUser',{
                     block:  'all'
                 })
                 .then((res)=>{
