@@ -23,6 +23,7 @@ function Users() {
         checkbox.forEach((el) => {
             if ( el.value!=='all' )
             checkedItems[el.value] = el.checked;
+            
         })
         setCheckedItems({...checkedItems, [event.target.value] : event.target.checked });
     }
