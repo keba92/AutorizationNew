@@ -73,7 +73,8 @@ app.post('/addUser', (req, res) => {
 
 app.post('/deleteUser', (req, res) => {
   const { del } = req.body;
-  const sql = 'DELETE FROM Users WHERE Id =?';
+  let sql;
+  (del == 'all') ? sql = 'DELETE FROM Users' : sql = 'DELETE FROM Users WHERE Id =?';
   db.query(sql, [del],
     (err, result) => {
       (err) ? console.log(err) : (userIn == del) ? res.send('reload') : res.send('no');

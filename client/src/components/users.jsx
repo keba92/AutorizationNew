@@ -25,7 +25,14 @@ function Users() {
 
     const deleteUsers = () => {
 		for(const key in checkedItems){
-            if(checkedItems[key]){
+            if (checkedAll) {
+                Axios.post('/deleteUser',{
+                    del:  'all'
+                })
+                .then((res)=>{
+                    (res.data === 'reload') ? window.location.assign('/') : window.location.assign('/users');
+                })
+            } else if(checkedItems[key]){
                 Axios.post('/deleteUser',{
                     del:  key
                 })
