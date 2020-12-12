@@ -3,6 +3,7 @@ import { useState } from "react";
 import Axios from 'axios';
 import { BrowserRouter } from 'react-router-dom';
 import Users from 'users';
+import Registration from './registration';
 function Autorization() {
     const [login, setLogIn] = useState('');
     const [password, setPassword] = useState('');
@@ -29,7 +30,7 @@ function Autorization() {
             Password: <input type="password" className ='password' onChange ={(e) => {setPassword(e.target.value)}}></input>
             <a href='/registration'> Registration </a>
             <button className ='btn btn-outline-primary' onClick ={logIn}> LogIn </button>
-            <BrowserRouter>{isisAuthenticated ? <Users /> : <Autorization/> }</BrowserRouter>
+            <BrowserRouter>{isisAuthenticated ? <Users /> : <Registration/> }</BrowserRouter>
         </div>
     );
 }
