@@ -25,7 +25,7 @@ function Users() {
 
     const deleteUsers = () => {
 		for(const key in checkedItems){
-            if (checkedAll) {
+            if (Object.values(checkedItems).every((el) => el === true)) {
                 Axios.post('/deleteUser',{
                     del:  'all'
                 })
@@ -62,7 +62,14 @@ function Users() {
 
     const blockUser = () =>{
         for(const key in checkedItems){
-            if(checkedItems[key]){
+            if (Object.values(checkedItems).every((el) => el === true)) {
+                Axios.post('/blockUse',{
+                    block:  'all'
+                })
+                .then((res)=>{
+                    (res.data === 'reload') ? window.location.assign('/') : window.location.assign('/users');
+                })
+            } else if(checkedItems[key]){
                 Axios.post('/blockUser',{
                     block:  key
                 })

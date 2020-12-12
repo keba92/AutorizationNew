@@ -75,19 +75,20 @@ app.post('/deleteUser', (req, res) => {
   const { del } = req.body;
   let sql;
   (del == 'all') ? sql = 'DELETE FROM Users' : sql = 'DELETE FROM Users WHERE Id =?';
-  db.query(sql, [del],
+  db.query(sql, (del == 'all') ? []: [del],
     (err, result) => {
-      (err) ? console.log(err) : (userIn == del) ? res.send('reload') : res.send('no');
+      (err) ? console.log(err) : (userIn == del || del == 'all') ? res.send('reload') : res.send('no');
     })
 })
 
 app.post('/blockUser', (req, res) => {
   const { block } = req.body;
   const status = 'Block';
-  const sql = `UPDATE Users SET Status_user=? WHERE Id =?`;
-  db.query(sql, [status, block],
+  let sql;
+  (block == 'all') ? sql = `UPDATE Users SET Status_user=?` : sql = `UPDATE Users SET Status_user=? WHERE Id =?`;
+  db.query(sql, (block == 'all') ? [status] : [status, block],
     (err, result) => {
-      (err) ? console.log(err) : (userIn == block) ? res.send('reload') : res.send('no');
+      (err) ? console.log(err) : (userIn == block || block == 'all') ? res.send('reload') : res.send('no');
     })
 })
 
