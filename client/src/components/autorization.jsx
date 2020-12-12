@@ -1,16 +1,24 @@
 import React from 'react';
 import { useState } from "react";
 import Axios from 'axios';
+import { BrowserRouter } from 'react-router-dom';
+import Users from 'users';
 function Autorization() {
     const [login, setLogIn] = useState('');
     const [password, setPassword] = useState('');
+    const [isisAuthenticated, setAuthenticated] = useState(false);
 
     const logIn = () => {
         Axios.post('/haveUser',{
             login:  login,
             password: password
         }).then((response) => {
-          (response.data)? window.location.assign('/users') : alert('Not found or User is Block');
+          if (response.data){
+            setAuthenticated(true);
+            window.location.assign('/users')
+          } else {
+            alert('Not found or User is Block');
+          }
         })
       };
 
@@ -21,6 +29,7 @@ function Autorization() {
             Password: <input type="password" className ='password' onChange ={(e) => {setPassword(e.target.value)}}></input>
             <a href='/registration'> Registration </a>
             <button className ='btn btn-outline-primary' onClick ={logIn}> LogIn </button>
+            <BrowserRouter>{isisAuthenticated ? <Users /> : <Autorization/> }</BrowserRouter>
         </div>
     );
 }
